@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import com.jantonioc.mymovies.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,33 +13,11 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("Main","OnCreate")
-        binding.txtmessage.text = "Hola Android"
-    }
+        binding.btnshow.setOnClickListener{
+            val message = binding.txtmessage
+            Toast.makeText(this,message.text,Toast.LENGTH_SHORT).show()
 
-    //Vuelve de un bloqueo
-    override fun onResume() {
-        super.onResume()
-    }
+        }
 
-    //Algo pausa la aplicacion
-    override fun onPause() {
-        super.onPause()
-    }
-
-    //Cuando pasa a Segundo Plano
-    override fun onStop() {
-        super.onStop()
-    }
-
-    //Pasa a Primer plano
-    override fun onStart() {
-        super.onStart()
-    }
-
-    //Cuando se va a destruir
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Main","OnDestroy")
     }
 }
