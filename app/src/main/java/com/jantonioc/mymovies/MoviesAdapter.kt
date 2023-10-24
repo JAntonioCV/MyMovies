@@ -4,9 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.jantonioc.mymovies.databinding.ViewMovieItemBinding
 
-class MoviesAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+//interface MovieClickListener{
+//    fun onMovieClicked(movie: Movie)
+//}
+
+class MoviesAdapter(private val movies: List<Movie>, private val movieClickListener: (Movie)-> Unit): RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ViewMovieItemBinding.inflate( LayoutInflater
@@ -18,7 +23,11 @@ class MoviesAdapter(private val movies: List<Movie>): RecyclerView.Adapter<Movie
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(movies[position])
+        val movie = movies[position]
+        holder.bind(movie)
+        holder.itemView.setOnClickListener{
+            movieClickListener(movie)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -30,7 +39,10 @@ class MoviesAdapter(private val movies: List<Movie>): RecyclerView.Adapter<Movie
     class ViewHolder(private val binding: ViewMovieItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(movie: Movie) {
             binding.title.text = movie.title
-            //binding.cover.setImageResource()
+            Glide
+                .with(binding.root.context)
+                .load(movie.cover)
+                .into(binding.cover)
         }
     }
 
