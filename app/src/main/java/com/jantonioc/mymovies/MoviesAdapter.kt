@@ -27,10 +27,10 @@ class MoviesAdapter(private val movies: List<Movie>): RecyclerView.Adapter<Movie
 
 
 
-    class ViewHolder(binding: ViewMovieItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(movie: Movie)
-        {
-
+    class ViewHolder(private val binding: ViewMovieItemBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(movie: Movie) {
+            binding.title.text = movie.title
+            //binding.cover.setImageResource()
         }
     }
 
