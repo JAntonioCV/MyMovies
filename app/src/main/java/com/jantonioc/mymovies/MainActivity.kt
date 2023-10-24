@@ -29,13 +29,5 @@ class MainActivity : AppCompatActivity() {
         ) {movie ->
             Toast.makeText(this@MainActivity, movie.title, Toast.LENGTH_SHORT).show()
         }
-//            //Evento Click
-//                object : MovieClickListener{
-//                    override fun onMovieClicked(movie: Movie) {
-//                        Toast.makeText(this@MainActivity,movie.title,Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-
-
     }
 }
