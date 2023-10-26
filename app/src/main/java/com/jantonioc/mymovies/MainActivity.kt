@@ -5,7 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.jantonioc.mymovies.databinding.ActivityMainBinding
+import com.jantonioc.mymovies.model.Movie
+import com.jantonioc.mymovies.model.MovieDbClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,21 +20,18 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recycler.adapter = MoviesAdapter(
-            listOf(
-                Movie("Titulo 1", "https://loremflickr.com/320/240?lock=1"),
-                Movie("Titulo 2", "https://loremflickr.com/320/240?lock=2"),
-                Movie("Titulo 3", "https://loremflickr.com/320/240?lock=3"),
-                Movie("Titulo 4", "https://loremflickr.com/320/240?lock=4"),
-                Movie("Titulo 5", "https://loremflickr.com/320/240?lock=5"),
-                Movie("Titulo 6", "https://loremflickr.com/320/240?lock=6"),
-                Movie("Titulo 7", "https://loremflickr.com/320/240?lock=7"),
-                Movie("Titulo 8", "https://loremflickr.com/320/240?lock=8"),
-                Movie("Titulo 9", "https://loremflickr.com/320/240?lock=9"),
-                Movie("Titulo 10", "https://loremflickr.com/320/240?lock=10"),
-            )
-        ) {movie ->
+
+        val moviesAdapter = MoviesAdapter(emptyList()) { movie ->
             Toast.makeText(this@MainActivity, movie.title, Toast.LENGTH_SHORT).show()
+        }
+
+        binding.recycler.adapter = moviesAdapter
+
+        lifecycleScope.launch {
+            val apiKey = getString(R.string.api_Key)
+            val popularMovies = MovieDbClient.service.listPopularMovie(apiKey)
+                moviesAdapter.movies = popularMovies.results
+                moviesAdapter.notifyDataSetChanged()
         }
     }
 }
