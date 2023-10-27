@@ -1,5 +1,7 @@
 package com.jantonioc.mymovies
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,7 @@ import kotlinx.coroutines.withContext
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -22,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val moviesAdapter = MoviesAdapter(emptyList()) { movie ->
-            Toast.makeText(this@MainActivity, movie.title, Toast.LENGTH_SHORT).show()
+            navigateTo(movie)
         }
 
         binding.recycler.adapter = moviesAdapter
@@ -33,5 +36,12 @@ class MainActivity : AppCompatActivity() {
                 moviesAdapter.movies = popularMovies.results
                 moviesAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun navigateTo(movie: Movie) {
+        val intent= Intent(this,DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_MOVIE,movie)
+
+        startActivity(intent)
     }
 }
