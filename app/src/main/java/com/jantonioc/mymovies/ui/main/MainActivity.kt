@@ -1,20 +1,15 @@
-package com.jantonioc.mymovies
+package com.jantonioc.mymovies.ui.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.jantonioc.mymovies.R
 import com.jantonioc.mymovies.databinding.ActivityMainBinding
 import com.jantonioc.mymovies.model.Movie
 import com.jantonioc.mymovies.model.MovieDbClient
-import kotlinx.coroutines.Dispatchers
+import com.jantonioc.mymovies.ui.detail.DetailActivity
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateTo(movie: Movie) {
-        val intent= Intent(this,DetailActivity::class.java)
+        val intent= Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_MOVIE,movie)
 
         startActivity(intent)

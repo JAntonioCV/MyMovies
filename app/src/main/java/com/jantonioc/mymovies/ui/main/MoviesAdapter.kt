@@ -1,7 +1,6 @@
-package com.jantonioc.mymovies
+package com.jantonioc.mymovies.ui.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,7 +37,7 @@ class MoviesAdapter(var movies: List<Movie>, private val movieClickListener: (Mo
             binding.title.text = movie.title
             Glide
                 .with(binding.root.context)
-                .load("https://image.tmdb.org/t/p/w185/${movie.backdrop_path}")
+                .load("https://image.tmdb.org/t/p/w780/${movie.backdrop_path}")
                 .into(binding.cover)
         }
     }

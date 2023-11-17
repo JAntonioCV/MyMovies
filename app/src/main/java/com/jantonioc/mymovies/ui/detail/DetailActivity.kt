@@ -1,11 +1,13 @@
-package com.jantonioc.mymovies
+package com.jantonioc.mymovies.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import com.bumptech.glide.Glide
+import com.jantonioc.mymovies.R
 import com.jantonioc.mymovies.databinding.ActivityDetailBinding
 import com.jantonioc.mymovies.model.Movie
 
@@ -31,8 +33,16 @@ class DetailActivity : AppCompatActivity() {
 
     private fun bindDetailInfo(detailinfo: TextView, movie: Movie?) {
         detailinfo.text = buildSpannedString {
-            bold { append("Original language: ")}
-            appendLine(movie?.original_language)
+
+            if (movie != null) {
+                appendinfo(R.string.original_languaje, movie.original_language)
+                appendinfo(R.string.original_title, movie.original_title)
+                appendinfo(R.string.release_date, movie.release_date)
+                appendinfo(R.string.popularity, movie.popularity.toString())
+                appendinfo(R.string.vote_average, movie.vote_average.toString())
+
+
+            }
 
             bold { append("Original Tittle: ")}
             appendLine(movie?.original_title)
@@ -47,4 +57,14 @@ class DetailActivity : AppCompatActivity() {
             appendLine(movie?.vote_average.toString())
         }
     }
+
+    private fun SpannableStringBuilder.appendinfo(stringRes: Int, value: String)
+    {
+        bold {
+            append(getString(stringRes))
+            append(": ")
+        }
+        appendLine(value)
+    }
+
 }
