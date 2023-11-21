@@ -56,6 +56,14 @@ dependencies {
     //Courrutines
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
 
+    //Activity y Fragment
+    implementation("androidx.activity:activity-ktx:1.6.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    //Ubicacion
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+
 
 
 
