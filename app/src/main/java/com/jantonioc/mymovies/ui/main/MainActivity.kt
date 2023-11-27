@@ -18,6 +18,8 @@ import com.jantonioc.mymovies.model.Movie
 import com.jantonioc.mymovies.model.MovieDbClient
 import com.jantonioc.mymovies.ui.detail.DetailActivity
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private val requestPermisionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        isGranted -> requestPopularMovies(isGranted)
+        isGranted -> doRequestPopularMovies(isGranted)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,32 +50,29 @@ class MainActivity : AppCompatActivity() {
         requestPermisionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
-    @SuppressLint("MissingPermission")
-    private fun requestPopularMovies(isLocationGranted: Boolean)
-    {
-        if(isLocationGranted)
-        {
-            fusedLocationClient.lastLocation.addOnCompleteListener{
-                doRequestPopularMovies(getRegionFromLocation(it.result))
-            }
-        }else
-        {
-            doRequestPopularMovies(DEFAULT_REGION)
-        }
-
-
-    }
-
-    private fun doRequestPopularMovies(region: String) {
+    private fun doRequestPopularMovies(isGranted: Boolean) {
         lifecycleScope.launch {
             val apiKey = getString(R.string.api_Key)
+            val region = getRegion(isGranted)
             val popularMovies = MovieDbClient.service.listPopularMovie(apiKey, region)
             moviesAdapter.movies = popularMovies.results
             moviesAdapter.notifyDataSetChanged()
         }
     }
+    @SuppressLint("MissingPermission")
+    private suspend fun getRegion(isLocationGranted: Boolean): String = suspendCancellableCoroutine { continuation ->
+        if(isLocationGranted)
+        {
+            fusedLocationClient.lastLocation.addOnCompleteListener{
+                continuation.resume(getRegionFromLocation(it.result))
+            }
+        }else
+        {
+            continuation.resume(DEFAULT_REGION)
+        }
+    }
 
-    private fun getRegionFromLocation(location: Location?): String {
+    private fun getRegionFromLocation(location: Location?): String  {
 
         if(location==null)
         {

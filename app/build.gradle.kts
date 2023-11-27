@@ -62,9 +62,7 @@ dependencies {
 
     //Ubicacion
     implementation("com.google.android.gms:play-services-location:21.0.1")
-
-
-
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
 
 }
